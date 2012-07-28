@@ -33,13 +33,14 @@ public class P01 {
             result.add(integers);
             return result;
         }
-        if (n == sum) {
-            List<Integer> integers = new ArrayList<Integer>();
-            integers.add(n);
-            result.add(integers);
-        }
+
         if (n > sum) result.addAll(calculate(n - 1, sum));
         else {
+            if (n == sum) {
+                List<Integer> integers = new ArrayList<Integer>();
+                integers.add(n);
+                result.add(integers);
+            }
             result.addAll(calculate(n - 1, sum));
             List<List<Integer>> minusNResult = calculate(n - 1, sum - n);
             for (List<Integer> integers : minusNResult) {
