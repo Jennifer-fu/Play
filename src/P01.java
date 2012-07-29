@@ -70,12 +70,7 @@ public class P01 {
             for (int j = 1; j <= sum; j++) {
                 midResult.get(new AbstractMap.SimpleEntry(i, j)).addAll(midResult.get(new AbstractMap.SimpleEntry(i - 1, j)));
                 if (i > j) continue;
-                ArrayList<List<Integer>> needAddJMidResult = new ArrayList<List<Integer>>();
-                for (List<Integer> list : midResult.get(new AbstractMap.SimpleEntry(i - 1, j - i))) {
-                    ArrayList<Integer> integers = new ArrayList<Integer>(list);
-                    Collections.copy(integers,list);
-                    needAddJMidResult.add(integers);
-                }
+                ArrayList<List<Integer>> needAddJMidResult = copy(midResult.get(new AbstractMap.SimpleEntry(i - 1, j - i)));
                 midResult.get(new AbstractMap.SimpleEntry(i, j)).addAll(needAddJMidResult);
 
                 for (List<Integer> integers : needAddJMidResult) {
@@ -86,6 +81,16 @@ public class P01 {
         return midResult.get(new AbstractMap.SimpleEntry(n, sum));
     }
 
+    private ArrayList<List<Integer>> copy(List<List<Integer>> src) {
+        ArrayList<List<Integer>> desc = new ArrayList<List<Integer>>();
+        for (List<Integer> list : src) {
+            ArrayList<Integer> integers = new ArrayList<Integer>(list);
+            Collections.copy(integers, list);
+            desc.add(integers);
+        }
+        return desc;
+    }
+
     public List<List<Integer>> calculate(int n, int sum) {
 //        return recursive(n,sum);
         return noRecursive(n, sum);
@@ -94,7 +99,7 @@ public class P01 {
     public static void main(String[] args) {
         P01 p01 = new P01();
         long start = System.currentTimeMillis();
-        List<List<Integer>> result = p01.calculate(30, 45);
+        List<List<Integer>> result = p01.calculate(5, 5);
         System.out.println(System.currentTimeMillis() - start);
         for (List<Integer> integers : result) {
             System.out.println(integers.size() + ":");
