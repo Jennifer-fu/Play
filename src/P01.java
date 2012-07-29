@@ -54,12 +54,12 @@ public class P01 {
         Map<Map.Entry<Integer, Integer>, List<List<Integer>>> midResult = new HashMap<Map.Entry<Integer, Integer>, List<List<Integer>>>();
         for (int i = 0; i <= n; i++) {
             for (int j = 0; j <= sum; j++) {
-                if (i == j && i>0) {
+                if (i == j && i > 0) {
                     ArrayList<Integer> list = new ArrayList<Integer>();
                     list.add(i);
                     ArrayList<List<Integer>> lists = new ArrayList<List<Integer>>();
                     lists.add(list);
-                    midResult.put(new AbstractMap.SimpleEntry(i, j),lists);
+                    midResult.put(new AbstractMap.SimpleEntry(i, j), lists);
                 } else {
                     midResult.put(new AbstractMap.SimpleEntry(i, j), new ArrayList<List<Integer>>());
                 }
@@ -70,16 +70,46 @@ public class P01 {
             for (int j = 1; j <= sum; j++) {
                 midResult.get(new AbstractMap.SimpleEntry(i, j)).addAll(midResult.get(new AbstractMap.SimpleEntry(i - 1, j)));
                 if (i > j) continue;
-                ArrayList<List<Integer>> needAddJMidResult = copy(midResult.get(new AbstractMap.SimpleEntry(i - 1, j - i)));
-                midResult.get(new AbstractMap.SimpleEntry(i, j)).addAll(needAddJMidResult);
+                ArrayList<List<Integer>> needAddIMidResult = copy(midResult.get(new AbstractMap.SimpleEntry(i - 1, j - i)));
+                midResult.get(new AbstractMap.SimpleEntry(i, j)).addAll(needAddIMidResult);
 
-                for (List<Integer> integers : needAddJMidResult) {
+                for (List<Integer> integers : needAddIMidResult) {
                     integers.add(i);
                 }
             }
         }
         return midResult.get(new AbstractMap.SimpleEntry(n, sum));
     }
+
+
+    public List<List<Integer>> noRecursiveOptimization(int n, int sum) {
+        HashMap<Integer, List<List<Integer>>> midResult = new HashMap<Integer, List<List<Integer>>>();
+        for (int i = 0; i <= sum; i++) {
+            midResult.put(i, new ArrayList<List<Integer>>());
+        }
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = sum; j > 0; j--) {
+//                midResult.get(j).addAll(midResult.get(j));  //not used this line any more
+                if (j < i) continue;
+                if (j == i) {
+                    ArrayList<Integer> integers = new ArrayList<Integer>();
+                    integers.add(i);
+                    ArrayList<List<Integer>> lists = new ArrayList<List<Integer>>();
+                    lists.add(integers);
+                    midResult.get(j).addAll(lists);
+                } else {
+                    List<List<Integer>> needAddIMidResult = copy(midResult.get(j - i));
+                    midResult.get(j).addAll(needAddIMidResult);
+                    for (List<Integer> integers : needAddIMidResult) {
+                        integers.add(i);
+                    }
+                }
+            }
+        }
+        return midResult.get(sum);
+    }
+
 
     private ArrayList<List<Integer>> copy(List<List<Integer>> src) {
         ArrayList<List<Integer>> desc = new ArrayList<List<Integer>>();
@@ -93,13 +123,14 @@ public class P01 {
 
     public List<List<Integer>> calculate(int n, int sum) {
 //        return recursive(n,sum);
-        return noRecursive(n, sum);
+//        return noRecursive(n, sum);
+        return noRecursiveOptimization(n, sum);
     }
 
     public static void main(String[] args) {
         P01 p01 = new P01();
         long start = System.currentTimeMillis();
-        List<List<Integer>> result = p01.calculate(5, 5);
+        List<List<Integer>> result = p01.calculate(10, 16);
         System.out.println(System.currentTimeMillis() - start);
         for (List<Integer> integers : result) {
             System.out.println(integers.size() + ":");
