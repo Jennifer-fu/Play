@@ -70,7 +70,7 @@ public class P01 {
             for (int j = 1; j <= sum; j++) {
                 midResult.get(new AbstractMap.SimpleEntry(i, j)).addAll(midResult.get(new AbstractMap.SimpleEntry(i - 1, j)));
                 if (i > j) continue;
-                ArrayList<List<Integer>> needAddIMidResult = copy(midResult.get(new AbstractMap.SimpleEntry(i - 1, j - i)));
+                ArrayList<List<Integer>> needAddIMidResult = deepCopy(midResult.get(new AbstractMap.SimpleEntry(i - 1, j - i)));
                 midResult.get(new AbstractMap.SimpleEntry(i, j)).addAll(needAddIMidResult);
 
                 for (List<Integer> integers : needAddIMidResult) {
@@ -81,6 +81,13 @@ public class P01 {
         return midResult.get(new AbstractMap.SimpleEntry(n, sum));
     }
 
+    /*
+    * optimize 空间复杂度，将为1维数组，即:
+    * for i=1..N
+    * for v=V..0
+    *    f[v]=max{f[v],f[v-c[i]]+w[i]};
+    * V需倒序
+    * */
 
     public List<List<Integer>> noRecursiveOptimization(int n, int sum) {
         HashMap<Integer, List<List<Integer>>> midResult = new HashMap<Integer, List<List<Integer>>>();
@@ -99,7 +106,7 @@ public class P01 {
                     lists.add(integers);
                     midResult.get(j).addAll(lists);
                 } else {
-                    List<List<Integer>> needAddIMidResult = copy(midResult.get(j - i));
+                    List<List<Integer>> needAddIMidResult = deepCopy(midResult.get(j - i));
                     midResult.get(j).addAll(needAddIMidResult);
                     for (List<Integer> integers : needAddIMidResult) {
                         integers.add(i);
@@ -111,7 +118,7 @@ public class P01 {
     }
 
 
-    private ArrayList<List<Integer>> copy(List<List<Integer>> src) {
+    private ArrayList<List<Integer>> deepCopy(List<List<Integer>> src) {
         ArrayList<List<Integer>> desc = new ArrayList<List<Integer>>();
         for (List<Integer> list : src) {
             ArrayList<Integer> integers = new ArrayList<Integer>(list);
