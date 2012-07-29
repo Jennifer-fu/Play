@@ -50,6 +50,9 @@ public class P01 {
         return result;
     }
 
+    /*
+    * 二维数组实现，计算出所有二维数组的值，初始化很重要
+    * */
     public List<List<Integer>> noRecursive(int n, int sum) {
         Map<Map.Entry<Integer, Integer>, List<List<Integer>>> midResult = new HashMap<Map.Entry<Integer, Integer>, List<List<Integer>>>();
         for (int i = 0; i <= n; i++) {
@@ -82,7 +85,7 @@ public class P01 {
     }
 
     /*
-    * optimize 空间复杂度，将为1维数组，即:
+    * optimize 空间复杂度，降为1维数组，即:
     * for i=1..N
     * for v=V..0
     *    f[v]=max{f[v],f[v-c[i]]+w[i]};
