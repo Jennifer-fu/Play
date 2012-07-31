@@ -20,14 +20,44 @@ public class P02 {
         return max;
     }
 
-    public int recursive(int[] coins, int money, int i, int min){
-        if(i==0 && money%coins[0]==0)return  money/coins[0];
-        if(i==0 && money%coins[0]!=0) return -1;
+    public int recursive(int[] coins, int money, int i, int min) {
+        if (i == 0 && money % coins[0] == 0) return money / coins[0];
+        if (i == 0 && money % coins[0] != 0) return Integer.MAX_VALUE;
 
         for (int k = 0; k <= money / coins[i]; k++) {
-            int resultWithKCoinsI = recursive(coins, money - k * coins[i], i - 1, min) + k;
-            if(resultWithKCoinsI <min)min = resultWithKCoinsI;
+            int recursive = recursive(coins, money - k * coins[i], i - 1, min);
+            int resultWithKCoinsI = recursive==Integer.MAX_VALUE?Integer.MAX_VALUE:recursive + k;
+            if (resultWithKCoinsI < min) min = resultWithKCoinsI;
         }
         return min;
+    }
+
+    public int noRecursive(int[] coins, int money) {
+        int[][] result = new int[coins.length][money + 1];
+        for (int i = 0; i < coins.length; i++) {
+            for (int j = 0; j <= money; j++) {
+                if (j % coins[i] == 0) result[i][j] = j / coins[i];
+                else result[i][j] = Integer.MAX_VALUE;
+            }
+        }
+
+
+        for (int i = 1; i < coins.length; i++) {
+            for (int j = 1; j <= money; j++) {
+                int min = Integer.MAX_VALUE;
+                for (int k = 0; k <= j / coins[i]; k++) {
+                    int resultWithKCoinI = result[i - 1][j - k * coins[i]]==Integer.MAX_VALUE?Integer.MAX_VALUE:result[i - 1][j - k * coins[i]] + k;
+                    if (resultWithKCoinI < min) min = resultWithKCoinI;
+                }
+                result[i][j] = min;
+            }
+        }
+
+        return result[coins.length - 1][money];
+    }
+
+    public int calculate(int[] coins, int money) {
+//        return recursive(coins,money,coins.length-1,Integer.MAX_VALUE);
+        return noRecursive(coins, money);
     }
 }
