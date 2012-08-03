@@ -26,7 +26,7 @@ public class P02 {
 
         for (int k = 0; k <= money / coins[i]; k++) {
             int recursive = recursive(coins, money - k * coins[i], i - 1, min);
-            int resultWithKCoinsI = recursive==Integer.MAX_VALUE?Integer.MAX_VALUE:recursive + k;
+            int resultWithKCoinsI = recursive == Integer.MAX_VALUE ? Integer.MAX_VALUE : recursive + k;
             if (resultWithKCoinsI < min) min = resultWithKCoinsI;
         }
         return min;
@@ -41,12 +41,11 @@ public class P02 {
             }
         }
 
-
         for (int i = 1; i < coins.length; i++) {
             for (int j = 1; j <= money; j++) {
                 int min = Integer.MAX_VALUE;
                 for (int k = 0; k <= j / coins[i]; k++) {
-                    int resultWithKCoinI = result[i - 1][j - k * coins[i]]==Integer.MAX_VALUE?Integer.MAX_VALUE:result[i - 1][j - k * coins[i]] + k;
+                    int resultWithKCoinI = result[i - 1][j - k * coins[i]] == Integer.MAX_VALUE ? Integer.MAX_VALUE : result[i - 1][j - k * coins[i]] + k;
                     if (resultWithKCoinI < min) min = resultWithKCoinI;
                 }
                 result[i][j] = min;
@@ -56,8 +55,39 @@ public class P02 {
         return result[coins.length - 1][money];
     }
 
+    public int zhu(int[] coins, int money) {
+        int[] r = new int[money + 1];
+        for (int i = 1; i < r.length; i++) {
+            r[i] = Integer.MAX_VALUE;
+        }
+
+        for (int i = 0; i < coins.length; i++) {
+            for (int j = 0; j <= money; j++) {
+                if (j >= coins[i] && r[j - coins[i]] < Integer.MAX_VALUE) r[j] = Math.min(r[j], r[j - coins[i]] + 1);
+            }
+        }
+        return r[money];
+    }
+
+    public int noRecursiveOptimization(int[] coins, int money) {
+        int[] result = new int[money + 1];
+        for (int i = 1; i <= money; i++) {
+            result[i] = Integer.MAX_VALUE;
+        }
+
+        for (int i = 0; i < coins.length; i++) {
+            for (int j = 1; j <= money; j++) {
+                if (j >= coins[i] && result[j - coins[i]] < Integer.MAX_VALUE)
+                    result[j] = Math.min(result[j - coins[i]] + 1, result[j]);
+            }
+        }
+        return result[money];
+    }
+
     public int calculate(int[] coins, int money) {
 //        return recursive(coins,money,coins.length-1,Integer.MAX_VALUE);
-        return noRecursive(coins, money);
+//        return noRecursive(coins, money);
+//        return zhu(coins, money);
+        return noRecursiveOptimization(coins, money);
     }
 }

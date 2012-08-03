@@ -39,7 +39,7 @@ public class P02Test {
 
     @Test
     public void should_return_3_if_has_coins_25_21_5_2_1_and_money_is_63 (){
-        int min = p02.calculate(new int[]{25, 21, 5, 2, 1}, 63);
+        int min = p02.calculate(new int[]{26, 21, 5, 2, 1}, 63);
         assertThat(min,is(3));
     }
 
