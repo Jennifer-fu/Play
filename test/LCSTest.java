@@ -38,4 +38,12 @@ public class LCSTest {
         String result = lcs.calculate("feefs", "as");
         assertThat(result,is("s"));
     }
+
+    @Test
+    public void should_return_CTAATA_given_GTTCCTAATA_and_CGATAATTGAGA(){
+        LCS lcs = new LCS();
+        String result = lcs.calculate("GTTCCTAATA", "CGATAATTGAGA");
+        assertThat(result,is("CTAATA"));
+    }
+
 }
