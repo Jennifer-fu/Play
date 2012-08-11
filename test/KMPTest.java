@@ -89,4 +89,25 @@ public class KMPTest {
         ArrayList<Integer> result = kmp.kmp("a", "b");
         assertThat(result.size(),is(0));
     }
+
+    @Test
+    public void should_a_if_lhs_and_rhs_are_both_a(){
+        KMP kmp = new KMP();
+        String result = kmp.longestCommonSubstring("a", "a");
+        assertThat(result,is("a"));
+    }
+
+    @Test
+    public void should_return_empty_if_lhs_is_a_and_rhs_is_b(){
+        KMP kmp = new KMP();
+        String result = kmp.longestCommonSubstring("a", "b");
+        assertThat(result,is(""));
+    }
+
+    @Test
+    public void should_return_MADAM_given_XMADAMYX_and_XYMADAMX(){
+        KMP kmp = new KMP();
+        String result = kmp.longestCommonSubstring("XMADAMYX", "XYMADAMX");
+        assertThat(result,is("MADAM"));
+    }
 }
