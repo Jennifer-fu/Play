@@ -25,7 +25,8 @@ public class KMP {
         int[] next = next(pattern);
         int j = 0, i = 0;
         while (i < origin.length() && j < pattern.length()) {
-            if (j > 0 && origin.charAt(i) != pattern.charAt(j)) {
+            if(j==0 && origin.charAt(i)!=pattern.charAt(j))i++;
+            else if (j > 0 && origin.charAt(i) != pattern.charAt(j)) {
                 j = next[j - 1];
             } else {
                 j++;

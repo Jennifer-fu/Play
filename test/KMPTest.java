@@ -64,4 +64,29 @@ public class KMPTest {
         assertThat(result.get(1),is(3));
         assertThat(result.get(2),is(5));
     }
+
+    @Test
+    public void should_result_sub_string_index_2(){
+        KMP kmp = new KMP();
+        ArrayList<Integer> result = kmp.kmp("bcbcbcbc", "bcbc");
+        assertThat(result.size(),is(3));
+        assertThat(result.get(0),is(0));
+        assertThat(result.get(1),is(2));
+        assertThat(result.get(2),is(4));
+    }
+
+    @Test
+    public void should_0_if_origin_and_pattern_are_both_a(){
+        KMP kmp = new KMP();
+        ArrayList<Integer> result = kmp.kmp("a", "a");
+        assertThat(result.size(),is(1));
+        assertThat(result.get(0),is(0));
+    }
+
+    @Test
+    public void should_not_match_if_origin_is_a_and_pattern_is_b(){
+        KMP kmp = new KMP();
+        ArrayList<Integer> result = kmp.kmp("a", "b");
+        assertThat(result.size(),is(0));
+    }
 }
