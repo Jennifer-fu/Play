@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class KMP {
 
     public int[] next(String pattern) {
@@ -7,13 +9,32 @@ public class KMP {
             char currentChar = pattern.charAt(i);
             int nextIndexOfLastMatch = result[i - 1] + 1;
             char nextCharOfLastMatch = pattern.charAt(nextIndexOfLastMatch);
-            while(currentChar != nextCharOfLastMatch && nextIndexOfLastMatch>0){
-                nextIndexOfLastMatch = result[result[i - 1]]+1;
+            while (currentChar != nextCharOfLastMatch && nextIndexOfLastMatch > 1) {
+                nextIndexOfLastMatch = result[result[i - 1]] + 1;
                 nextCharOfLastMatch = pattern.charAt(nextIndexOfLastMatch);
             }
-            if(currentChar == nextCharOfLastMatch)
+            if (currentChar == nextCharOfLastMatch)
                 result[i] = nextIndexOfLastMatch;
             else result[i] = -1;
+        }
+        return result;
+    }
+
+    public ArrayList<Integer> kmp(String origin, String pattern) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        int[] next = next(pattern);
+        int j = 0, i = 0;
+        while (i < origin.length() && j < pattern.length()) {
+            if (j > 0 && origin.charAt(i) != pattern.charAt(j)) {
+                j = next[j - 1] + 1;
+            } else {
+                j++;
+                i++;
+            }
+            if (j == pattern.length()) {
+                result.add(i - j);
+                j = next[j - 1] + 1;
+            }
         }
         return result;
     }
