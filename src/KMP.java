@@ -4,18 +4,18 @@ public class KMP {
 
     public int[] next(String pattern) {
         int[] result = new int[pattern.length()];
-        result[0] = -1;
+        result[0] = 0;
         for (int i = 1; i < pattern.length(); i++) {
             char currentChar = pattern.charAt(i);
-            int nextIndexOfLastMatch = result[i - 1] + 1;
+            int nextIndexOfLastMatch = result[i - 1];
             char nextCharOfLastMatch = pattern.charAt(nextIndexOfLastMatch);
             while (currentChar != nextCharOfLastMatch && nextIndexOfLastMatch > 1) {
-                nextIndexOfLastMatch = result[result[i - 1]] + 1;
+                nextIndexOfLastMatch = result[nextIndexOfLastMatch-1];
                 nextCharOfLastMatch = pattern.charAt(nextIndexOfLastMatch);
             }
             if (currentChar == nextCharOfLastMatch)
-                result[i] = nextIndexOfLastMatch;
-            else result[i] = -1;
+                result[i] = nextIndexOfLastMatch + 1;
+            else result[i] = 0;
         }
         return result;
     }
@@ -26,14 +26,14 @@ public class KMP {
         int j = 0, i = 0;
         while (i < origin.length() && j < pattern.length()) {
             if (j > 0 && origin.charAt(i) != pattern.charAt(j)) {
-                j = next[j - 1] + 1;
+                j = next[j - 1];
             } else {
                 j++;
                 i++;
             }
             if (j == pattern.length()) {
                 result.add(i - j);
-                j = next[j - 1] + 1;
+                j = next[j - 1];
             }
         }
         return result;

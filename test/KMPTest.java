@@ -12,7 +12,7 @@ public class KMPTest {
         KMP kmp = new KMP();
         int[] next = kmp.next("a");
         assertThat(next.length, is(1));
-        assertThat(next[0],is(-1));
+        assertThat(next[0],is(0));
     }
 
     @Test
@@ -20,8 +20,8 @@ public class KMPTest {
         KMP kmp = new KMP();
         int[] next = kmp.next("ab");
         assertThat(next.length, is(2));
-        assertThat(next[0],is(-1));
-        assertThat(next[1],is(-1));
+        assertThat(next[0],is(0));
+        assertThat(next[1],is(0));
     }
 
     @Test
@@ -29,22 +29,22 @@ public class KMPTest {
         KMP kmp = new KMP();
         int[] next = kmp.next("aa");
         assertThat(next.length, is(2));
-        assertThat(next[0],is(-1));
-        assertThat(next[1],is(0));
+        assertThat(next[0],is(0));
+        assertThat(next[1],is(1));
     }
 
     @Test
-    public void should_return_minus_1_minus_1_minus_1_minus_1_01201234563_given_agctagcagctagctg(){
+    public void should_return_01201234563_given_agctagcagctagctg(){
         KMP kmp = new KMP();
         int[] next = kmp.next("agctagcagctagctg");
-        assertArrayEquals(new int[]{-1,-1,-1,-1,0,1,2,0,1,2,3,4,5,6,3,-1},next);
+        assertArrayEquals(new int[]{0,0,0,0,1,2,3,1,2,3,4,5,6,7,4,0},next);
     }
 
     @Test
     public void should_return_minus_1_minus_1_01201234563_given_ababacb(){
         KMP kmp = new KMP();
         int[] next = kmp.next("ababacb");
-        assertArrayEquals(new int[]{-1,-1,0,1,2,-1,-1},next);
+        assertArrayEquals(new int[]{0,0,1,2,3,0,0},next);
     }
 
     @Test
